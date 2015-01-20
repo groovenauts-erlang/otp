@@ -39,6 +39,8 @@
 -include("ssl_srp.hrl").
 -include_lib("public_key/include/public_key.hrl"). 
 
+-include_lib("eunit/include/eunit.hrl").
+
 %% Internal application API
 
 %% Setup
@@ -434,6 +436,9 @@ next_state(Current, Next, #ssl_tls{type = ?HANDSHAKE, fragment = Data},
 	State = State0#state{protocol_buffers =
 				 Buffers#protocol_buffers{tls_packets = Packets,
 							  tls_handshake_buffer = Buf}},
+    ?debugVal(Next),
+    ?debugVal(Packets),
+    ?debugVal(Buf),
 	handle_tls_handshake(Handle, Next, State)
     catch throw:#alert{} = Alert ->
 	    handle_own_alert(Alert, Version, Current, State0)
